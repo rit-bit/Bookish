@@ -5,7 +5,7 @@ namespace Bookish.DatabaseInterfaces
 {
     public class DatabaseConnection
     {
-        private const string ConnectionString = "Server=akita.zoo.lan;Port=5432;Database=bookish;Username=bookish;Password=pw";
+        private const string ConnectionString = "Server=10.50.2.38;Port=5432;Database=bookish;Username=bookish;Password=pw";
 
         public NpgsqlConnection db
         {

@@ -1,5 +1,6 @@
 ﻿using Bookish.DatabaseInterfaces;
 using Bookish.Models;
+using Bookish.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,14 +21,30 @@ namespace Bookish.Controllers
         [HttpGet("")]
         public IActionResult BooksPage()
         {
-            _booksRepo.Insert(new Book
-            {
-                isbn = "9781484200773", title = "'Pro Git2'", primary_author = "'Scott Chacon'",
-                additional_authors = "'Ben Straub'"
-            });
-            
             var books = _booksRepo.GetBooks();
             return View(new BooksModel {books = books});
+        }
+
+        [HttpGet("create")]
+        public IActionResult CreateBookPage()
+        {
+            return View();
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateBook(CreateBookRequestModel bookModel)
+        {
+            var book = new Book
+            {
+                isbn = bookModel.isbn,
+                title = bookModel.title,
+                primary_author = bookModel.primary_author,
+                additional_authors = bookModel.additional_authors
+            };
+
+            _booksRepo.Insert(book);
+            
+            return RedirectToAction("BooksPage");
         }
     }
 }

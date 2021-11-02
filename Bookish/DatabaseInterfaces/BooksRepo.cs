@@ -32,10 +32,10 @@ namespace Bookish.DatabaseInterfaces
                 {
                     rowsAffected = new NpgsqlCommand(
                         $"INSERT INTO books (isbn, title, primary_author, additional_authors) VALUES (" +
-                        $"{book.isbn}, " +
-                        $"{book.title}, " +
-                        $"{book.primary_author}, " +
-                        $"{book.additional_authors})",
+                        $"'{book.isbn}', " +
+                        $"'{book.title}', " +
+                        $"'{book.primary_author}', " +
+                        $"'{book.additional_authors}')",
                         db, transaction).ExecuteNonQuery();
 
                     transaction.Commit();
