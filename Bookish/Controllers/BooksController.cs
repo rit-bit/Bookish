@@ -20,6 +20,12 @@ namespace Bookish.Controllers
         [HttpGet("")]
         public IActionResult BooksPage()
         {
+            _booksRepo.Insert(new Book
+            {
+                isbn = "9781484200773", title = "'Pro Git2'", primary_author = "'Scott Chacon'",
+                additional_authors = "'Ben Straub'"
+            });
+            
             var books = _booksRepo.GetBooks();
             return View(new BooksModel {books = books});
         }

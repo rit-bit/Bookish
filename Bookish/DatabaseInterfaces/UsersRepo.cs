@@ -18,7 +18,8 @@ namespace Bookish.DatabaseInterfaces
         
         public IEnumerable<User> GetUsers()
         {
-            return _database.db.Query<User>("SELECT * FROM users");
+            using var db = _database.db;
+            return db.Query<User>("SELECT * FROM users");
         }
 
         public bool Insert(User user)

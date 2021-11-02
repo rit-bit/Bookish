@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using Bookish.Models;
 using Dapper;
@@ -10,20 +11,37 @@ namespace Bookish.DatabaseInterfaces
     {
         private DatabaseConnection _database;
         
+        public BooksRepo()
+        {
+            _database = new DatabaseConnection();
+        }
+        
         public IEnumerable<Book> GetBooks()
         {
-            return _database.db.Query<Book>("SELECT * FROM books");
+            using var db = _database.db;
+            return db.Query<Book>("SELECT * FROM books");
         }
 
         public bool Insert(Book book)
         {
-            var transaction = _database.db.BeginTransaction();
-            var rowsAffected = new NpgsqlCommand($"INSERT INTO books VALUES (" +
-                                                 $"{book.isbn}, " +
-                                                 $"{book.title}, " +
-                                                 $"{book.primary_author}, " +
-                                                 $"{book.additional_authors})", 
-                _database.db, transaction).ExecuteNonQuery();
+            using var db = _database.db;
+            var transaction = db.BeginTransaction();
+            var rowsAffected = 0;
+            try
+            {
+                rowsAffected = new NpgsqlCommand($"INSERT INTO books (isbn, title, primary_author, additional_authors) VALUES (" +
+                                                     $"{book.isbn}, " +
+                                                     $"{book.title}, " +
+                                                     $"{book.primary_author}, " +
+                                                     $"{book.additional_authors})", 
+                    db, transaction).ExecuteNonQuery();
+            
+                transaction.Commit();
+            }
+            catch (NpgsqlException e)
+            {
+                Console.WriteLine(e);
+            }
             
             return rowsAffected == 1;
         }

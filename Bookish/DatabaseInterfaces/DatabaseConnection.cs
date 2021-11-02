@@ -11,7 +11,7 @@ namespace Bookish.DatabaseInterfaces
         {
             get
             {
-                using var connection = new NpgsqlConnection(ConnectionString);
+                var connection = new NpgsqlConnection(ConnectionString);
             
                 if (connection.State == ConnectionState.Closed)
                     connection.Open();
