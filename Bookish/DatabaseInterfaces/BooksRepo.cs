@@ -8,20 +8,16 @@ namespace Bookish.DatabaseInterfaces
 {
     public class BooksRepo : IBooksRepo
     {
-        private const string ConnectionString = "Server=akita.zoo.lan;Port=5432;Database=bookish;Username=bookish;Password=pw";
+        private DatabaseConnection _database;
+        
         public IEnumerable<Book> GetBooks()
         {
-            using IDbConnection db = new NpgsqlConnection(ConnectionString);
-            
-            if (db.State == ConnectionState.Closed)
-                db.Open();
-
-            return db.Query<Book>("SELECT * FROM books");
+            return _database.db.Query<Book>("SELECT * FROM books");
         }
 
         public bool Insert(Book book)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public bool Update(Book book)
