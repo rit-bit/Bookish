@@ -9,21 +9,15 @@ namespace Bookish.DatabaseInterfaces
 {
     public class UsersRepo : IUsersRepo
     {
-        private const string ConnectionString = "Server=localhost;Port=5432;Database=bookish;Username=bookish;Password=pw";
+        private const string ConnectionString = "Server=akita.zoo.lan;Port=5432;Database=bookish;Username=bookish;Password=pw";
         public IEnumerable<User> GetUsers()
         {
             using IDbConnection db = new NpgsqlConnection(ConnectionString);
-            return db.Query<User>("SELECT * FROM users");
-            /*
-            const string connectionString = "User ID=postgres;Server=localhost,5432;Database=bookish;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;";
-            using IDbConnection db = new SqlConnection(connectionString);
+            
             if (db.State == ConnectionState.Closed)
-            {
                 db.Open();
-            }
-
-            return db.Query<User>("select * from users", commandType:CommandType.Text);
-            */
+            
+            return db.Query<User>("SELECT * FROM users");
         }
 
         public bool Insert(User user)
