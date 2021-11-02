@@ -6,9 +6,9 @@ using Dapper;
 
 namespace Bookish.DatabaseInterfaces
 {
-    public class BooksRepo : IBooksRepo
+    public class UsersRepo : IUsersRepo
     {
-        public IEnumerable<Book> GetBooks()
+        public IEnumerable<User> GetUsers()
         {
             const string connectionString = "User ID=postgres;Server=localhost,5432;Database=bookish;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;";
             using IDbConnection db = new SqlConnection(connectionString);
@@ -17,20 +17,20 @@ namespace Bookish.DatabaseInterfaces
                 db.Open();
             }
 
-            return db.Query<Book>("select * from books", commandType:CommandType.Text);
+            return db.Query<User>("select * from users", commandType:CommandType.Text);
         }
 
-        public bool Insert(Book book)
+        public bool Insert(User user)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Update(Book book)
+        public bool Update(User user)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Delete(Book book)
+        public bool Delete(User user)
         {
             throw new System.NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bookish.Models;
 
 namespace Bookish.DatabaseInterfaces
 {
@@ -8,13 +9,5 @@ namespace Bookish.DatabaseInterfaces
         bool Insert(Book book);
         bool Update(Book book);
         bool Delete(Book book);
-    }
-
-    public class Book
-    {
-        public string isbn { get; set; }
-        public string title { get; set; }
-        public string primary_author { get; set; }
-        public string additional_authors { get; set; }
     }
 }

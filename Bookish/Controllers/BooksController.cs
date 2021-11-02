@@ -6,21 +6,21 @@ using Microsoft.Extensions.Logging;
 namespace Bookish.Controllers
 {
     [Route("books")]
-    public class BooksPageController : Controller
+    public class BooksController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IBooksRepo BooksRepo;
+        private readonly IBooksRepo _booksRepo;
 
-        public BooksPageController(ILogger<HomeController> logger)
+        public BooksController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            BooksRepo = new BooksRepo();
+            _booksRepo = new BooksRepo();
         }
         
         [HttpGet("")]
         public IActionResult BooksPage()
         {
-            var books = BooksRepo.GetBooks();
+            var books = _booksRepo.GetBooks();
             return View(new BooksModel {books = books});
         }
     }
