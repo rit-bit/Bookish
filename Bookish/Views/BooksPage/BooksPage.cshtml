@@ -1,0 +1,38 @@
+﻿@model BooksModel;
+
+<table>
+    <tr>
+        <th>
+            title;
+        </th>
+        <th>
+            primary_author;
+        </th>
+        <th>
+            additional_authors;
+        </th>
+        <th>
+            isbn;
+        </th>
+    </tr>
+    
+    @{
+        foreach (var book in Model.books)
+        {
+            <tr>
+                <td>
+                    @book.title;
+                </td>
+                <td>
+                    @book.primary_author;
+                </td>
+                <td>
+                    @book.additional_authors;
+                </td>
+                <td>
+                    @book.isbn;
+                </td>
+            </tr>
+        }
+    }
+</table>

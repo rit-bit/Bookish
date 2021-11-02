@@ -1,11 +1,11 @@
-﻿namespace Bookish.Models
+﻿using System.Collections;
+using System.Collections.Generic;
+using Bookish.DatabaseInterfaces;
+
+namespace Bookish.Models
 {
     public class BooksModel
     {
-        public int id { get; set; }
-        public string isbn { get; set; }
-        public string title { get; set; }
-        public string primary_author { get; set; }
-        public string additional_authors { get; set; }
+        public IEnumerable<Book> books { get; set; }
     }
 }
