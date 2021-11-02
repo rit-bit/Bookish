@@ -7,11 +7,11 @@ namespace Bookish.DatabaseInterfaces
     {
         private const string ConnectionString = "Server=akita.zoo.lan;Port=5432;Database=bookish;Username=bookish;Password=pw";
 
-        public IDbConnection db
+        public NpgsqlConnection db
         {
             get
             {
-                using IDbConnection connection = new NpgsqlConnection(ConnectionString);
+                using var connection = new NpgsqlConnection(ConnectionString);
             
                 if (connection.State == ConnectionState.Closed)
                     connection.Open();

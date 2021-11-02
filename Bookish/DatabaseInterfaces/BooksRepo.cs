@@ -17,7 +17,15 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Insert(Book book)
         {
-            return true;
+            var transaction = _database.db.BeginTransaction();
+            var rowsAffected = new NpgsqlCommand($"INSERT INTO books VALUES (" +
+                                                 $"{book.isbn}, " +
+                                                 $"{book.title}, " +
+                                                 $"{book.primary_author}, " +
+                                                 $"{book.additional_authors})", 
+                _database.db, transaction).ExecuteNonQuery();
+            
+            return rowsAffected == 1;
         }
 
         public bool Update(Book book)
