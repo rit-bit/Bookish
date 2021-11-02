@@ -5,9 +5,9 @@ namespace Bookish.DatabaseInterfaces
 {
     public interface IBooksRepo
     {
-        IEnumerable<Book> GetBooks();
-        bool Insert(Book book);
-        bool Update(Book book);
-        bool Delete(Book book);
+        IEnumerable<BookModel> GetBooks();
+        bool Insert(BookModel book);
+        bool Update(BookModel book);
+        bool Delete(BookModel book);
     }
 }

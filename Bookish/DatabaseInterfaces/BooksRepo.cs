@@ -16,13 +16,13 @@ namespace Bookish.DatabaseInterfaces
             _database = new DatabaseConnection();
         }
         
-        public IEnumerable<Book> GetBooks()
+        public IEnumerable<BookModel> GetBooks()
         {
             using var db = _database.db;
-                return db.Query<Book>("SELECT * FROM books");
+                return db.Query<BookModel>("SELECT * FROM books");
         }
 
-        public bool Insert(Book book)
+        public bool Insert(BookModel book)
         {
             using (var db = _database.db)
             {
@@ -49,12 +49,12 @@ namespace Bookish.DatabaseInterfaces
             }
         }
 
-        public bool Update(Book book)
+        public bool Update(BookModel book)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool Delete(Book book)
+        public bool Delete(BookModel book)
         {
             throw new System.NotImplementedException();
         }

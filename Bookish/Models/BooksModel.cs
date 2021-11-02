@@ -6,6 +6,6 @@ namespace Bookish.Models
 {
     public class BooksModel
     {
-        public IEnumerable<Book> books { get; set; }
+        public IEnumerable<BookModel> books { get; set; }
     }
 }

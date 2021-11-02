@@ -34,7 +34,7 @@ namespace Bookish.Controllers
         [HttpPost("create")]
         public IActionResult CreateBook(CreateBookRequestModel bookModel)
         {
-            var book = new Book
+            var book = new BookModel
             {
                 isbn = bookModel.isbn,
                 title = bookModel.title,
