@@ -1,10 +1,17 @@
 ﻿@model Bookish.Models.Requests.CreateBookRequestModel;
 
 <form action="create" method="POST">
-    <input type="text" name="isbn"/>
-    <input type="text" name="title"/>
-    <input type="text" name="primary_author"/>
-    <input type="text" name="additional_authors"/>
+    <label for="isbn">ISBN</label>
+    <input type="text" id="isbn" name="isbn"/><br/>
+    
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title"/><br/>
+    
+    <label for="primary_author">Primary author</label>
+    <input type="text" id="primary_author" name="primary_author"/><br/>
+    
+    <label for="additional_authors">Additional authors</label>
+    <input type="text" id="additional_authors" name="additional_authors"/><br/>
 
     <input type="submit"/>
 </form>

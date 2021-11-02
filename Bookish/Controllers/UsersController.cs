@@ -23,5 +23,11 @@ namespace Bookish.Controllers
             var users = _usersRepo.GetUsers();
             return View(new UsersModel {users = users});
         }
+        
+        [HttpGet("create")]
+        public IActionResult CreateUserPage()
+        {
+            return View();
+        }
     }
 }
