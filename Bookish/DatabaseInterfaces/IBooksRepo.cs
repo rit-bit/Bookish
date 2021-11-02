@@ -8,6 +8,6 @@ namespace Bookish.DatabaseInterfaces
         IEnumerable<BookModel> GetBooks();
         bool Insert(BookModel book);
         bool Update(BookModel book);
-        bool Delete(BookModel book);
+        bool Delete(int id);
     }
 }

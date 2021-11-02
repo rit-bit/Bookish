@@ -1,0 +1,23 @@
+﻿@model Bookish.Models.Requests.EditBookRequestModel;
+
+@{
+    var book = (BookModel)ViewData["currentBook"];
+}
+
+<form action="edit" method="POST">
+    <input id="id" type="hidden" name="id" value="@book.id"/><br/>
+    
+    <label for="isbn">ISBN</label>
+    <input id="isbn" type="text" name="isbn" value="@book.isbn"/><br/>
+    
+    <label for="title">Title</label>
+    <input id="title" type="text" name="title" value="@book.title"/><br/>
+    
+    <label for="primary_author">Primary author</label>
+    <input id="primary_author" type="text" name="primary_author" value="@book.primary_author"/><br/>
+    
+    <label for="additional_authors">Additional authors</label>
+    <input id="additional_authors" type="text" name="additional_authors" value="@book.additional_authors"/><br/>
+
+    <input type="submit"/>
+</form>
