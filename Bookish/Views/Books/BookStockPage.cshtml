@@ -11,19 +11,29 @@
 
 <table>
     <tr>
-        <th><a href="@idQuery">ID</a></th>
-        <th><a href="@descriptionQuery">Stock Description</a></th>
-        <th><a href="@activeQuery">Is Active</a></th>
-        <th></th>
+        <th>ID</th>
+        <th>Stock Description</th>
+        <th>Is Active</th>
+        <th>On Loan To</th>
     </tr>
 
     @{
-        foreach (var book in Model.allBookStock)
+        foreach (var stock in Model.allBookStock)
         {
+            var active = stock.active ? "true" : "false";
             <tr>
-                <td>@book.id</td>
-                <td>@book.description</td>
-                <td>@book.active</td>
+                <td>@stock.id</td>
+                <td>@stock.description</td>
+                <td>@stock.active</td>
+                <td>No one</td>
+                <td>
+                    <form id="deleteBookForm" method="post" action="stock/delete">
+                        <input type="hidden" name="bookId" value="@Model.selectedBook.id"/>
+                        <input type="hidden" name="id" value="@stock.id"/>
+                        <input type="hidden" name="active" value="@active"/>
+                        <input type="submit" value="Toggle Active"/>
+                    </form>
+                </td>
             </tr>
         }
     }

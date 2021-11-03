@@ -31,7 +31,9 @@ namespace Bookish.DatabaseInterfaces
         public IEnumerable<StockModel> GetAllCopies(int id)
         {
             using var db = DatabaseConnection.GetConnection();
-            return db.Query<StockModel>($"SELECT stock.id, stock.description, stock.active FROM stock WHERE stock.book_id = {id}");
+            return db.Query<StockModel>($"SELECT stock.id, stock.description, stock.active " +
+                                        $"FROM stock WHERE stock.book_id = {id} " +
+                                        $"ORDER BY stock.id ASC");
         }
 
         public bool Insert(StockModel stockModel)
@@ -62,9 +64,25 @@ namespace Bookish.DatabaseInterfaces
             throw new System.NotImplementedException();
         }
 
-        public bool Decommission(StockModel stockModel)
+        public bool SetActive(int stockId, bool active)
         {
-            throw new System.NotImplementedException();
+            using var db = DatabaseConnection.GetConnection();
+            var transaction = db.BeginTransaction();
+            var rowsAffected = 0;
+            try
+            {
+                rowsAffected = new NpgsqlCommand(
+                    $"UPDATE stock SET active = {active} WHERE id = {stockId}",
+                    db, transaction).ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch (NpgsqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return rowsAffected == 1;
         }
 
         public int DecommissionBookStock(int book_id)

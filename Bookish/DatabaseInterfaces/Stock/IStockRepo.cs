@@ -12,7 +12,7 @@ namespace Bookish.DatabaseInterfaces
         IEnumerable<StockModel> GetActiveCopies(int id);
         bool Insert(StockModel stockModel);
         bool Update(StockModel stockModel);
-        bool Decommission(StockModel stockModel);
+        bool SetActive(int stockId, bool active);
         int DecommissionBookStock(int bookId);
     }
 }

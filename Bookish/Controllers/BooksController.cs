@@ -99,5 +99,14 @@ namespace Bookish.Controllers
             
             return View(new AllBookStock {allBookStock = stock, selectedBook = selectedBook});
         }
+        
+        [HttpPost("stock/delete")]
+        public IActionResult DeleteBookStock(int bookId, int id, bool active)
+        {
+            Console.WriteLine(active);
+            _stockRepo.SetActive(id, !active);
+
+            return RedirectToAction("BookStockPage", new { id = bookId});
+        }
     }
 }
