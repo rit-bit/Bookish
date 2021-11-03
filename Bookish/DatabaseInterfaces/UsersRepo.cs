@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Data;
 using Bookish.Models;
 using Dapper;
 using Npgsql;
@@ -43,12 +41,12 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Update(User user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool Delete(User user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
