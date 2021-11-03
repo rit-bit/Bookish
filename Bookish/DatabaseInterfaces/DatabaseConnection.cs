@@ -1,14 +1,16 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.IO;
 using Npgsql;
 
 namespace Bookish.DatabaseInterfaces
 {
     public static class DatabaseConnection
     {
-        // TODO Create config file for connection string
-        private const string ConnectionString = "Server=10.50.2.40;Port=5432;Database=bookish;Username=bookish;Password=pw";
+        private static readonly string ConnectionString = File.ReadAllText(Path.Combine("res", "ConnectionString.txt"));
 
-        public static NpgsqlConnection GetConnection() {
+        public static NpgsqlConnection GetConnection()
+        {
             var connection = new NpgsqlConnection(ConnectionString);
         
             if (connection.State == ConnectionState.Closed)

@@ -23,10 +23,15 @@ namespace Bookish.Controllers
         }
         
         [HttpGet("")]
-        public IActionResult BooksPage(string sortBy = "title")
+        public IActionResult BooksPage(string sortBy = "title", bool ascending = true)
         {
-            var books = _booksRepo.GetBooksAndStockCount();
-            return View(new AllBooksCountModel {books = books});
+            var books = _booksRepo.GetBooksAndStockCount(sortBy, ascending);
+            return View(new AllBooksCountModel
+            {
+                books = books,
+                sortBy = sortBy,
+                ascending = ascending
+            });
         }
 
         [HttpGet("create")]

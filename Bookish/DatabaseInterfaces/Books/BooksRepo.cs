@@ -15,10 +15,31 @@ namespace Bookish.DatabaseInterfaces
                 return db.Query<BookModel>("SELECT * FROM books");
         }
         
-        public IEnumerable<BookCountModel> GetBooksAndStockCount()
+        public IEnumerable<BookCountModel> GetBooksAndStockCount(string sortBy, bool ascending)
         {
             using var db = DatabaseConnection.GetConnection();
-            return db.Query<BookCountModel>("SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) FROM books LEFT JOIN stock ON books.id = stock.book_id GROUP BY books.id");
+            sortBy = ValidateSortBy(sortBy);
+            var order = ascending ? "ASC" : "DESC";
+            var sql = "SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) " +
+                      $"FROM books LEFT JOIN stock ON books.id = stock.book_id " +
+                      $"GROUP BY books.id ORDER BY {sortBy} {order}";
+            return db.Query<BookCountModel>(sql);
+        }
+        
+        private static string ValidateSortBy(string sortBy)
+        {
+            switch (sortBy)
+            {
+                case "title":
+                case "primary_author":
+                case "additional_authors":
+                case "isbn":
+                case "id":
+                case "count":
+                    return sortBy;
+                default:
+                    return "title";
+            }
         }
 
         public bool Insert(BookModel book)

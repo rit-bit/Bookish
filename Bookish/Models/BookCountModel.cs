@@ -15,6 +15,8 @@ namespace Bookish.Models
 
     public class AllBooksCountModel
     {
-        public IEnumerable<BookCountModel> books;
+        public IEnumerable<BookCountModel> books { get; set; }
+        public string sortBy { get; set; }
+        public bool ascending { get; set; }
     }
 }

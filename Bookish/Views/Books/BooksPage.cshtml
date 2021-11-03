@@ -4,14 +4,23 @@
 
 <a href="books/create">Create Book</a>
 
+@{
+    var idQuery = "books?sortBy=id&ascending=" + (Model.sortBy != "id" || !Model.@ascending);
+    var titleQuery = "books?sortBy=title&ascending=" + (Model.sortBy != "title" || !Model.@ascending);
+    var authorQuery = "books?sortBy=primary_author&ascending=" + (Model.sortBy != "primary_author" || !Model.@ascending);
+    var additionalAuthorsQuery = "books?sortBy=additional_authors&ascending=" + (Model.sortBy != "additional_authors" || !Model.@ascending);
+    var isbnQuery = "books?sortBy=isbn&ascending=" + (Model.sortBy != "isbn" || !Model.@ascending);
+    var countQuery = "books?sortBy=count&ascending=" + (Model.sortBy == "count" && !Model.@ascending);
+}
+
 <table>
     <tr>
-        <th><a href="books?sortBy=id">ID</a></th>
-        <th><a href="books?sortBy=title">Title</a></th>
-        <th><a href="books?sortBy=primary_author">Primary Author</a></th>
-        <th><a href="books?sortBy=additional_authors">Additional Authors</a></th>
-        <th><a href="books?sortBy=isbn">ISBN</a></th>
-        <th><a href="books?sortBy=count">Copies available</a></th>
+        <th><a href="@idQuery">ID</a></th>
+        <th><a href="@titleQuery">Title</a></th>
+        <th><a href="@authorQuery">Primary Author</a></th>
+        <th><a href="@additionalAuthorsQuery">Additional Authors</a></th>
+        <th><a href="@isbnQuery">ISBN</a></th>
+        <th><a href="@countQuery">Copies available</a></th>
         <th></th> @* This creates an empty heading above the buttons column *@
     </tr>
 
