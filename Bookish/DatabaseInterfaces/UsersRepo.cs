@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using Bookish.Models;
@@ -17,7 +18,27 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Insert(User user)
         {
-            throw new System.NotImplementedException();
+            using var db = DatabaseConnection.GetConnection();
+            var transaction = db.BeginTransaction();
+            var rowsAffected = 0;
+            try
+            {
+                rowsAffected = new NpgsqlCommand(
+                    $"INSERT INTO users (first_name, last_name, email_address, balance) VALUES (" +
+                    $"'{user.first_name}', " +
+                    $"'{user.last_name}', " +
+                    $"'{user.email_address}', " +
+                    $"'{user.balance}')",
+                    db, transaction).ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch (NpgsqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return rowsAffected == 1;
         }
 
         public bool Update(User user)
