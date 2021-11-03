@@ -23,10 +23,10 @@ namespace Bookish.Controllers
         }
         
         [HttpGet("")]
-        public IActionResult BooksPage()
+        public IActionResult BooksPage(string sortBy = "title")
         {
             var books = _booksRepo.GetBooks();
-            var copiesData = _stockRepo.GetAllCopies();
+            var copiesData = _stockRepo.GetAllActiveCopies();
             ViewData["stock"] = copiesData.ToDictionary(copy => copy.id);
             return View(new BooksModel {books = books});
         }
@@ -56,13 +56,11 @@ namespace Bookish.Controllers
         [HttpPost("delete")]
         public IActionResult DeleteBook(int id)
         {
-            var copies = _stockRepo.GetCopies(id).Count();
-            if (copies > 0)
-            {
-                _stockRepo.DeleteBookStock(id);
-            }
-            _booksRepo.Delete(id);
-            return RedirectToAction("BooksPage");  
+            Console.WriteLine(id);
+            _stockRepo.DecommissionBookStock(id);
+            
+            // _booksRepo.Delete(id);
+            return RedirectToAction("BooksPage");
         }
         
         [HttpGet("edit")]

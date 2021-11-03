@@ -43,7 +43,10 @@
                     @* <a href="books/edit">Edit</a> *@
                     <form id="deleteBookForm" method="post" action="books/delete"> @* Could change this to use a partial page to delete a book *@
                         <input type="hidden" name="id" value="@book.id"/>
-                        <button type="button" onclick="onBookDelete(@availableCopies)">Delete</button>
+                        @if (availableCopies > 0)
+                        {
+                            <button type="button" onclick="onBookDelete(this)">Delete</button>
+                        }
                     </form>
                 </td>
             </tr>

@@ -14,18 +14,18 @@ namespace Bookish.DatabaseInterfaces
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<CopyCountModel> GetAllCopies()
+        public IEnumerable<CopyCountModel> GetAllActiveCopies()
         {
             using var db = DatabaseConnection.GetConnection();
             return db.Query<CopyCountModel>($"SELECT books.id, COUNT(*) FROM books " +
                                             $"RIGHT JOIN stock ON books.id = stock.book_id " +
-                                            $"GROUP BY books.id;");
+                                            $"WHERE active = true GROUP BY books.id");
         }
 
-        public IEnumerable<StockModel> GetCopies(int id)
+        public IEnumerable<StockModel> GetActiveCopies(int id)
         {
             using var db = DatabaseConnection.GetConnection();
-            return db.Query<StockModel>($"SELECT * FROM stock WHERE book_id = {id}");
+            return db.Query<StockModel>($"SELECT * FROM stock WHERE book_id = {id} AND active = true");
         }
 
         public bool Insert(StockModel stockModel)
@@ -56,12 +56,12 @@ namespace Bookish.DatabaseInterfaces
             throw new System.NotImplementedException();
         }
 
-        public bool Delete(StockModel stockModel)
+        public bool Decommission(StockModel stockModel)
         {
             throw new System.NotImplementedException();
         }
 
-        public int DeleteBookStock(int book_id)
+        public int DecommissionBookStock(int book_id)
         {
             using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
@@ -69,7 +69,7 @@ namespace Bookish.DatabaseInterfaces
             try
             {
                 rowsAffected = new NpgsqlCommand(
-                    $"DELETE FROM stock WHERE book_id = {book_id}",
+                        $"UPDATE stock SET active = false WHERE book_id = {book_id}",
                     db, transaction).ExecuteNonQuery();
 
                 transaction.Commit();
