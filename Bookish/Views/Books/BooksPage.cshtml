@@ -1,5 +1,9 @@
 ﻿@model BooksModel;
 
+@{
+    var copies = (Dictionary<int, CopyCountModel>) ViewData["stock"];
+}
+
 <a href="books/create">Create Book</a>
 
 <table>
@@ -9,20 +13,21 @@
         <th>Primary Author</th>
         <th>Additional Authors</th>
         <th>ISBN</th>
+        <th>Copies available</th>
         <th></th> @* This creates an empty heading above the buttons column *@
     </tr>
 
     @{
         foreach (var book in Model.books)
         {
-            var editLink = $"books/edit?id={book.id}";
-            var deleteLink = $"books/delete?id={book.id}";
+            var availableCopies = copies[book.id].count;
             <tr>
                 <td>@book.id</td>
                 <td>@book.title</td>
                 <td>@book.primary_author</td>
                 <td>@book.additional_authors</td>
                 <td>@book.isbn</td>
+                <td>@availableCopies</td>
                 <td>
                     <form method="get" action="books/edit">
                         <input type="hidden" name="id" value="@book.id"/>
