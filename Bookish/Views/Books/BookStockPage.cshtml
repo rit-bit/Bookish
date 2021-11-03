@@ -15,17 +15,20 @@
         <th>Stock Description</th>
         <th>Is Active</th>
         <th>On Loan To</th>
+        <th>Due Back</th>
     </tr>
 
     @{
         foreach (var stock in Model.allBookStock)
         {
             var active = stock.active ? "true" : "false";
+            var due_back = stock.first_name == null ? "" : stock.due_back.ToString("d");
             <tr>
                 <td>@stock.id</td>
                 <td>@stock.description</td>
                 <td>@stock.active</td>
-                <td>No one</td>
+                <td>@stock.first_name</td>
+                <td>@due_back</td>
                 <td>
                     <form id="deleteBookForm" method="post" action="stock/delete">
                         <input type="hidden" name="bookId" value="@Model.selectedBook.id"/>

@@ -8,7 +8,7 @@ namespace Bookish.DatabaseInterfaces
     {
         IEnumerable<StockModel> GetStock();
         IEnumerable<CopyCountModel> GetAllActiveCopies();
-        IEnumerable<StockModel> GetAllCopies(int id);
+        IEnumerable<StockTransactionModel> GetAllCopies(int id);
         IEnumerable<StockModel> GetActiveCopies(int id);
         bool Insert(StockModel stockModel);
         bool Update(StockModel stockModel);

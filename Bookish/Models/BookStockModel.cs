@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Bookish.Models
 {
@@ -10,9 +11,19 @@ namespace Bookish.Models
         public bool active { get; set; }
     }
 
+    public class StockTransactionModel
+    {
+        public int id { get; set; }
+        public int book_id { get; set; }
+        public string description { get; set; }
+        public bool active { get; set; }
+        public string first_name { get; set; }
+        public DateTime due_back { get; set; }
+    }
+
     public class AllBookStock
     {
-        public IEnumerable<StockModel> allBookStock { get; set; }
+        public IEnumerable<StockTransactionModel> allBookStock { get; set; }
         
         public BookModel selectedBook { get; set; }
         
