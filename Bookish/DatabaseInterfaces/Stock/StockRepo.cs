@@ -18,7 +18,7 @@ namespace Bookish.DatabaseInterfaces
         {
             using var db = DatabaseConnection.GetConnection();
             return db.Query<CopyCountModel>($"SELECT books.id, COUNT(*) FROM books " +
-                                            $"LEFT JOIN stock ON books.id = stock.book_id " +
+                                            $"RIGHT JOIN stock ON books.id = stock.book_id " +
                                             $"GROUP BY books.id;");
         }
 
