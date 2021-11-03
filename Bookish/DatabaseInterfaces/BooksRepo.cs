@@ -9,22 +9,15 @@ namespace Bookish.DatabaseInterfaces
 {
     public class BooksRepo : IBooksRepo
     {
-        private DatabaseConnection _database;
-        
-        public BooksRepo()
-        {
-            _database = new DatabaseConnection();
-        }
-        
         public IEnumerable<BookModel> GetBooks()
         {
-            using var db = _database.db;
+            using var db = DatabaseConnection.GetConnection();
                 return db.Query<BookModel>("SELECT * FROM books");
         }
 
         public bool Insert(BookModel book)
         {
-            using var db = _database.db;
+            using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
             var rowsAffected = 0;
             try
@@ -49,7 +42,7 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Update(BookModel book)
         {
-            using var db = _database.db;
+            using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
             var rowsAffected = 0;
             try
@@ -75,7 +68,7 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Delete(int id)
         {
-            using var db = _database.db;
+            using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
             var rowsAffected = 0;
             try

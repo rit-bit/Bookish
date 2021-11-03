@@ -1,5 +1,6 @@
 ﻿using Bookish.DatabaseInterfaces;
 using Bookish.Models;
+using Bookish.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -28,6 +29,21 @@ namespace Bookish.Controllers
         public IActionResult CreateUserPage()
         {
             return View();
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateUser(CreateUserRequestModel userModel)
+        {
+            var user = new User
+            {
+                first_name = userModel.first_name,
+                last_name = userModel.last_name,
+                email_address = userModel.email_address
+            };
+
+            _usersRepo.Insert(user);
+
+            return RedirectToAction("UsersPage");
         }
     }
 }

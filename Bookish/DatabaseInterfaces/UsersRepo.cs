@@ -9,16 +9,9 @@ namespace Bookish.DatabaseInterfaces
 {
     public class UsersRepo : IUsersRepo
     {
-        private DatabaseConnection _database;
-
-        public UsersRepo()
-        {
-            _database = new DatabaseConnection();
-        }
-        
         public IEnumerable<User> GetUsers()
         {
-            using var db = _database.db;
+            using var db = DatabaseConnection.GetConnection();
             return db.Query<User>("SELECT * FROM users");
         }
 
