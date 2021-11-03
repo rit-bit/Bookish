@@ -1,0 +1,30 @@
+﻿@model AllBookStock
+
+@{
+    var idQuery = "books?sortBy=id&ascending=" + (Model.sortBy != "id" || !Model.@ascending);
+    var descriptionQuery = "books?sortBy=description&ascending=" + (Model.sortBy != "description" || !Model.@ascending);
+    var activeQuery = "books?sortBy=active&ascending=" + (Model.sortBy == "active" && !Model.@ascending);
+}
+
+<h1>@Model.selectedBook.title</h1>
+<h2>@Model.selectedBook.primary_author</h2>
+
+<table>
+    <tr>
+        <th><a href="@idQuery">ID</a></th>
+        <th><a href="@descriptionQuery">Stock Description</a></th>
+        <th><a href="@activeQuery">Is Active</a></th>
+        <th></th>
+    </tr>
+
+    @{
+        foreach (var book in Model.allBookStock)
+        {
+            <tr>
+                <td>@book.id</td>
+                <td>@book.description</td>
+                <td>@book.active</td>
+            </tr>
+        }
+    }
+</table>

@@ -27,6 +27,12 @@ namespace Bookish.DatabaseInterfaces
             using var db = DatabaseConnection.GetConnection();
             return db.Query<StockModel>($"SELECT * FROM stock WHERE book_id = {id} AND active = true");
         }
+        
+        public IEnumerable<StockModel> GetAllCopies(int id)
+        {
+            using var db = DatabaseConnection.GetConnection();
+            return db.Query<StockModel>($"SELECT stock.id, stock.description, stock.active FROM stock WHERE stock.book_id = {id}");
+        }
 
         public bool Insert(StockModel stockModel)
         {

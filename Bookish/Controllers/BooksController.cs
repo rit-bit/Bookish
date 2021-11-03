@@ -90,5 +90,14 @@ namespace Bookish.Controllers
             
             return RedirectToAction("BooksPage");
         }
+
+        [HttpGet("stock")]
+        public IActionResult BookStockPage(int id)
+        {
+            var stock = _stockRepo.GetAllCopies(id);
+            var selectedBook = _booksRepo.GetBooks().First(book => book.id == id);
+            
+            return View(new AllBookStock {allBookStock = stock, selectedBook = selectedBook});
+        }
     }
 }
