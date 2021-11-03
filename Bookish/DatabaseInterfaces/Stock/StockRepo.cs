@@ -31,11 +31,13 @@ namespace Bookish.DatabaseInterfaces
         public IEnumerable<StockTransactionModel> GetAllCopies(int id)
         {
             using var db = DatabaseConnection.GetConnection();
-            return db.Query<StockTransactionModel>($"SELECT stock.id, stock.book_id, stock.description, " +
-                                                   $"stock.active, users.first_name, transactions.due_back " +
-                                                   $"FROM stock LEFT JOIN transactions ON stock.id = transactions.stock_id " +
-                                                   $"LEFT JOIN users on transactions.user_id = users.id " + 
-                                                   "WHERE transactions.checked_in IS NOT NULL");
+            return db.Query<StockTransactionModel>(
+                $"SELECT DISTINCT stock.id, stock.book_id, stock.description, stock.active, users.first_name, transactions.due_back, MAX(transactions.checked_out) " +
+                $"FROM stock LEFT JOIN transactions ON stock.id = transactions.stock_id  " +
+                $"LEFT JOIN users on transactions.user_id = users.id " +
+                $"WHERE stock.book_id = {id} " +
+                $"GROUP BY stock.id, users.first_name, transactions.due_back " +
+                $"ORDER BY MAX(transactions.checked_out) DESC");
         }
 
         public bool Insert(StockModel stockModel)
