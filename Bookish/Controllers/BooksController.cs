@@ -25,10 +25,8 @@ namespace Bookish.Controllers
         [HttpGet("")]
         public IActionResult BooksPage(string sortBy = "title")
         {
-            var books = _booksRepo.GetBooks();
-            var copiesData = _stockRepo.GetAllActiveCopies();
-            ViewData["stock"] = copiesData.ToDictionary(copy => copy.id);
-            return View(new BooksModel {books = books});
+            var books = _booksRepo.GetBooksAndStockCount();
+            return View(new AllBooksCountModel {books = books});
         }
 
         [HttpGet("create")]

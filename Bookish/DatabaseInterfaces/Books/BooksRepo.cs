@@ -14,6 +14,12 @@ namespace Bookish.DatabaseInterfaces
             using var db = DatabaseConnection.GetConnection();
                 return db.Query<BookModel>("SELECT * FROM books");
         }
+        
+        public IEnumerable<BookCountModel> GetBooksAndStockCount()
+        {
+            using var db = DatabaseConnection.GetConnection();
+            return db.Query<BookCountModel>("SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) FROM books LEFT JOIN stock ON books.id = stock.book_id GROUP BY books.id");
+        }
 
         public bool Insert(BookModel book)
         {
