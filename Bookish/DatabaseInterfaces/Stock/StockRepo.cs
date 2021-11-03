@@ -34,7 +34,8 @@ namespace Bookish.DatabaseInterfaces
             return db.Query<StockTransactionModel>($"SELECT stock.id, stock.book_id, stock.description, " +
                                                    $"stock.active, users.first_name, transactions.due_back " +
                                                    $"FROM stock LEFT JOIN transactions ON stock.id = transactions.stock_id " +
-                                                   $"LEFT JOIN users on transactions.user_id = users.id");
+                                                   $"LEFT JOIN users on transactions.user_id = users.id " + 
+                                                   "WHERE transactions.checked_in IS NOT NULL");
         }
 
         public bool Insert(StockModel stockModel)
