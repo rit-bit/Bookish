@@ -1,4 +1,5 @@
-﻿using Bookish.DatabaseInterfaces;
+﻿using System.Linq;
+using Bookish.DatabaseInterfaces;
 using Bookish.Models;
 using Bookish.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,32 @@ namespace Bookish.Controllers
             };
 
             _usersRepo.Insert(user);
+
+            return RedirectToAction("UsersPage");
+        }
+
+        [HttpGet("edit")]
+        public IActionResult EditUserPage(int id)
+        {
+            var users = _usersRepo.GetUsers();
+            var user = users.First(user => user.id == id);
+            ViewData["currentUser"] = user;
+            return View();
+        }
+
+        [HttpPost("edit")]
+        public IActionResult EditUser(EditUserRequestModel userModel)
+        {
+            var user = new UserModel
+            {
+                id = userModel.id,
+                first_name = userModel.first_name,
+                last_name = userModel.last_name,
+                email_address = userModel.email_address,
+                balance = userModel.balance
+            };
+
+            _usersRepo.Update(user);
 
             return RedirectToAction("UsersPage");
         }

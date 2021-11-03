@@ -41,7 +41,27 @@ namespace Bookish.DatabaseInterfaces
 
         public bool Update(UserModel userModel)
         {
-            throw new NotImplementedException();
+            using var db = DatabaseConnection.GetConnection();
+            var transaction = db.BeginTransaction();
+            var rowsAffected = 0;
+            try
+            {
+                rowsAffected = new NpgsqlCommand(
+                    $"UPDATE users SET " +
+                    $"first_name = '{userModel.first_name}', " +
+                    $"last_name = '{userModel.last_name}', " +
+                    $"email_address = '{userModel.email_address}' " +
+                    $"WHERE id = {userModel.id}",
+                    db, transaction).ExecuteNonQuery();
+
+                transaction.Commit();
+            }
+            catch (NpgsqlException e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return rowsAffected == 1;
         }
 
         public bool Delete(UserModel userModel)
