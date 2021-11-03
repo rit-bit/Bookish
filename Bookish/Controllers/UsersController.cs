@@ -34,7 +34,7 @@ namespace Bookish.Controllers
         [HttpPost("create")]
         public IActionResult CreateUser(CreateUserRequestModel userModel)
         {
-            var user = new User
+            var user = new UserModel
             {
                 first_name = userModel.first_name,
                 last_name = userModel.last_name,

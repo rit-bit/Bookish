@@ -8,13 +8,13 @@ namespace Bookish.DatabaseInterfaces
 {
     public class UsersRepo : IUsersRepo
     {
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserModel> GetUsers()
         {
             using var db = DatabaseConnection.GetConnection();
-            return db.Query<User>("SELECT * FROM users");
+            return db.Query<UserModel>("SELECT * FROM users");
         }
 
-        public bool Insert(User user)
+        public bool Insert(UserModel userModel)
         {
             using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
@@ -23,10 +23,10 @@ namespace Bookish.DatabaseInterfaces
             {
                 rowsAffected = new NpgsqlCommand(
                     $"INSERT INTO users (first_name, last_name, email_address, balance) VALUES (" +
-                    $"'{user.first_name}', " +
-                    $"'{user.last_name}', " +
-                    $"'{user.email_address}', " +
-                    $"'{user.balance}')",
+                    $"'{userModel.first_name}', " +
+                    $"'{userModel.last_name}', " +
+                    $"'{userModel.email_address}', " +
+                    $"'{userModel.balance}')",
                     db, transaction).ExecuteNonQuery();
 
                 transaction.Commit();
@@ -39,12 +39,12 @@ namespace Bookish.DatabaseInterfaces
             return rowsAffected == 1;
         }
 
-        public bool Update(User user)
+        public bool Update(UserModel userModel)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(User user)
+        public bool Delete(UserModel userModel)
         {
             throw new NotImplementedException();
         }

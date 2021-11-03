@@ -5,9 +5,9 @@ namespace Bookish.DatabaseInterfaces
 {
     public interface IUsersRepo
     {
-        IEnumerable<User> GetUsers();
-        bool Insert(User user);
-        bool Update(User user);
-        bool Delete(User user);
+        IEnumerable<UserModel> GetUsers();
+        bool Insert(UserModel userModel);
+        bool Update(UserModel userModel);
+        bool Delete(UserModel userModel);
     }
 }

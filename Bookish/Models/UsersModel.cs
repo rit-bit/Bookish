@@ -6,7 +6,7 @@ namespace Bookish.Models
 {
     public class UsersModel
     {
-        public IEnumerable<User> users { get; set; }
+        public IEnumerable<UserModel> users { get; set; }
         
         public string FormatBalance(decimal balance)
         {
