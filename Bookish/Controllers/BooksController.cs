@@ -13,6 +13,7 @@ namespace Bookish.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBooksRepo _booksRepo;
+        private readonly IStockRepo _stockRepo;
 
         public BooksController(ILogger<HomeController> logger)
         {
@@ -24,6 +25,7 @@ namespace Bookish.Controllers
         public IActionResult BooksPage()
         {
             var books = _booksRepo.GetBooks();
+            ViewData["stock"] = ""; // TODO
             return View(new BooksModel {books = books});
         }
 
