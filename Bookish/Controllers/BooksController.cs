@@ -54,7 +54,6 @@ namespace Bookish.Controllers
         [HttpPost("delete")]
         public IActionResult DeleteBook(int id)
         {
-            Console.WriteLine(id);
             _stockRepo.DecommissionBookStock(id);
             
             // _booksRepo.Delete(id);
