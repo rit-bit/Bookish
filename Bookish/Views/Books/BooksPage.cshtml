@@ -10,8 +10,8 @@
     var authorQuery = "books?sortBy=primary_author&ascending=" + (Model.sortBy != "primary_author" || !Model.@ascending);
     var additionalAuthorsQuery = "books?sortBy=additional_authors&ascending=" + (Model.sortBy != "additional_authors" || !Model.@ascending);
     var isbnQuery = "books?sortBy=isbn&ascending=" + (Model.sortBy != "isbn" || !Model.@ascending);
-    var countQuery = "books?sortBy=count&ascending=" + (Model.sortBy == "count" && !Model.@ascending);
-    // var availableQuery = "books?sortBy=available&ascending=" + (Model.sortBy == "available" && !Model.@ascending);
+	var countQuery = "books?sortBy=active_stock&ascending=" + (Model.sortBy == "active_stock" && !Model.@ascending);
+    var availableQuery = "books?sortBy=available&ascending=" + (Model.sortBy == "available" && !Model.@ascending);
 }
 
 <table>
@@ -22,7 +22,7 @@
         <th><a href="@additionalAuthorsQuery">Additional Authors</a></th>
         <th><a href="@isbnQuery">ISBN</a></th>
         <th><a href="@countQuery">Active Copies</a></th>
-        <th><a href="">Available Copies</a></th>
+        <th><a href="@availableQuery">Available Copies</a></th>
         <th></th> @* This creates an empty heading above the buttons column *@
     </tr>
 
@@ -36,8 +36,8 @@
                 <td>@book.primary_author</td>
                 <td>@book.additional_authors</td>
                 <td>@book.isbn</td>
-                <td>@book.count</td>
-                <td>available</td>
+                <td>@book.active_stock</td>
+                <td>@book.available_stock</td>
                 <td>
                     <form method="get" action="books/edit">
                         <input type="hidden" name="id" value="@book.id"/>
@@ -49,7 +49,7 @@
                     </form>
                     <form id="deleteBookForm" method="post" action="books/delete"> @* Could change this to use a partial page to delete a book *@
                         <input type="hidden" name="id" value="@book.id"/>
-                        @if (book.count > 0)
+                        @if (book.active_stock > 0)
                         {
                             <button type="button" onclick="onBookDelete(this)">Delete</button>
                         }

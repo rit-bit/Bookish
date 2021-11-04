@@ -26,9 +26,16 @@ namespace Bookish.DatabaseInterfaces
             using var db = DatabaseConnection.GetConnection();
             sortBy = ValidateSortBy(sortBy);
             var order = ascending ? "ASC" : "DESC";
-            var sql = "SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) " +
-                      $"FROM books LEFT JOIN stock ON books.id = stock.book_id " +
-                      $"GROUP BY books.id ORDER BY {sortBy} {order}";
+            var sql = $"WITH latest_loans (stock_id, is_on_loan) AS (SELECT t1.stock_id, CASE WHEN t1.checked_in IS NULL THEN true ELSE NULL END AS is_on_loan " +
+			$"FROM transactions t1 " +
+			$"JOIN(" +
+				$"SELECT stock_id, MAX(checked_out) AS max_c3 " +
+				$"FROM transactions GROUP BY stock_id) t2 " +
+				$"ON t1.stock_id = t2.stock_id AND t1.checked_out = t2.max_c3) " +
+				$"SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) AS active_stock, COUNT(*) AS available_stock " +
+				$"FROM latest_loans RIGHT JOIN stock ON latest_loans.stock_id = stock.id " +
+				$"LEFT JOIN books ON books.id = stock.book_id " +
+				$"WHERE latest_loans.is_on_loan IS NOT true GROUP BY books.id ORDER BY {sortBy} {order}";
             return db.Query<BookCountModel>(sql);
         }
         

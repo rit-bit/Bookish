@@ -10,7 +10,8 @@ namespace Bookish.Models
         public string title { get; set; }
         public string primary_author { get; set; }
         public string additional_authors { get; set; }
-        public int count { get; set; }
+        public int active_stock { get; set; }
+		public int available_stock { get; set; }
     }
 
     public class AllBooksCountModel
