@@ -1,0 +1,17 @@
+﻿@model Bookish.Models.Requests.CreateStockRequestModel;
+
+@{
+    var book = (BookModel) ViewData["currentBook"];
+}
+
+<form action="create" method="POST">
+    <input id="book_id" type="hidden" name="book_id" value="@book.id"/>
+    
+    <label for="description">Description</label>
+    <input type="text" id="description" name="description"/><br/>
+
+    <label for="is_active">Is Active</label>
+    <input type="checkbox" id="is_active" name="is_active" checked/><br/>
+
+    <input type="submit"/>
+</form>

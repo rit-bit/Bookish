@@ -48,9 +48,10 @@ namespace Bookish.DatabaseInterfaces
             try
             {
                 rowsAffected = new NpgsqlCommand(
-                    $"INSERT INTO stock (book_id, description) VALUES (" +
+                    $"INSERT INTO stock (book_id, description, active) VALUES (" +
                     $"'{stockModel.book_id}', " +
-                    $"'{stockModel.description}')",
+                    $"'{stockModel.description}', " +
+                    $"'{stockModel.is_active}')",
                     db, transaction).ExecuteNonQuery();
 
                 transaction.Commit();

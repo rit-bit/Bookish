@@ -56,6 +56,31 @@ namespace Bookish.Controllers
             return RedirectToAction("BooksPage");
         }
 
+        [HttpGet("stock/create")]
+        public IActionResult CreateStockPage(int book_id)
+        {
+            var books = _booksRepo.GetBooks();
+            var book = books.First(book => book.id == book_id);
+            ViewData["currentBook"] = book;
+            return View();
+        }
+
+        [HttpPost("stock/create")]
+        public IActionResult CreateStock(CreateStockRequestModel stockRequestModel)
+        {
+            var stock = new StockModel
+            {
+                id = stockRequestModel.id,
+                book_id = stockRequestModel.book_id,
+                description = stockRequestModel.description,
+                is_active = stockRequestModel.is_active
+            };
+
+            _stockRepo.Insert(stock);
+            
+            return RedirectToAction("BookStockPage", new { id = stockRequestModel.book_id});
+        }
+
         [HttpPost("delete")]
         public IActionResult DeleteBook(int id)
         {
