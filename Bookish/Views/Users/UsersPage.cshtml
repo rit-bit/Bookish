@@ -10,7 +10,7 @@
         <th>Balance</th>
         <th></th> @* This creates an empty heading above the buttons column *@
     </tr>
-    
+
     @{
         foreach (var user in Model.users)
         {
@@ -20,6 +20,10 @@
                 <td>@user.email_address</td>
                 <td>@Model.FormatBalance(user.balance)</td>
                 <td>
+                    <form method="get" action="users/loans">
+                        <input type="hidden" name="id" value="@user.id"/>
+                        <input value="Loans" type="submit"/>
+                    </form>
                     <form method="get" action="users/edit">
                         <input type="hidden" name="id" value="@user.id"/>
                         <input value="Edit" type="submit"/>

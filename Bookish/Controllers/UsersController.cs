@@ -12,11 +12,13 @@ namespace Bookish.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUsersRepo _usersRepo;
+        private readonly IBooksRepo _booksRepo;
         
         public UsersController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _usersRepo = new UsersRepo();
+            _booksRepo = new BooksRepo();
         }
 
         [HttpGet("")]
@@ -71,6 +73,12 @@ namespace Bookish.Controllers
             _usersRepo.Update(user);
 
             return RedirectToAction("UsersPage");
+        }
+        [HttpGet("loans")]
+        public IActionResult LoansPage(int user_id)
+        {
+            ViewData["loans"] = _booksRepo.GetBooks(user_id);
+            return View();
         }
     }
 }

@@ -15,6 +15,12 @@ namespace Bookish.DatabaseInterfaces
                 return db.Query<BookModel>("SELECT * FROM books");
         }
         
+        public IEnumerable<BookModel> GetBooks(int user_id)
+        {
+            using var db = DatabaseConnection.GetConnection();
+            return db.Query<BookModel>("SELECT * FROM books");
+        }
+        
         public IEnumerable<BookCountModel> GetBooksAndStockCount(string sortBy, bool ascending)
         {
             using var db = DatabaseConnection.GetConnection();
