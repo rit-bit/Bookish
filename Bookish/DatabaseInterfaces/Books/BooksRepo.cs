@@ -26,15 +26,19 @@ namespace Bookish.DatabaseInterfaces
             using var db = DatabaseConnection.GetConnection();
             sortBy = ValidateSortBy(sortBy);
             var order = ascending ? "ASC" : "DESC";
-            var sql = $"WITH latest_loans (stock_id, is_on_loan) AS (SELECT t1.stock_id, CASE WHEN t1.checked_in IS NULL THEN true ELSE NULL END AS is_on_loan " +
-			$"FROM transactions t1 " +
-			$"JOIN(" +
+            var sql = $"WITH stock_active_table (book_id, active_count) AS ( " +
+				$"SELECT book_id, COUNT(CASE active WHEN true then 1 else null end) AS active_count FROM stock " +
+				$"GROUP BY book_id " +
+				$"), latest_loans (stock_id, is_on_loan) AS (SELECT t1.stock_id, CASE WHEN t1.checked_in IS NULL THEN true ELSE NULL END AS is_on_loan " +
+				$"FROM transactions t1 " +
+				$"JOIN(" +
 				$"SELECT stock_id, MAX(checked_out) AS max_c3 " +
 				$"FROM transactions GROUP BY stock_id) t2 " +
 				$"ON t1.stock_id = t2.stock_id AND t1.checked_out = t2.max_c3) " +
-				$"SELECT books.*, COUNT(CASE active WHEN true then 1 else null end) AS active_stock, COUNT(*) AS available_stock " +
+				$"SELECT books.*, MAX(stock_active_table.active_count) AS active_stock, COUNT(*) AS available_stock " +
 				$"FROM latest_loans RIGHT JOIN stock ON latest_loans.stock_id = stock.id " +
 				$"LEFT JOIN books ON books.id = stock.book_id " +
+				$"LEFT JOIN stock_active_table ON books.id = stock_active_table.book_id " +
 				$"WHERE latest_loans.is_on_loan IS NOT true GROUP BY books.id ORDER BY {sortBy} {order}";
             return db.Query<BookCountModel>(sql);
         }
