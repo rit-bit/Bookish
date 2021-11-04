@@ -18,10 +18,10 @@
                 <td>@user.first_name</td>
                 <td>@user.last_name</td>
                 <td>@user.email_address</td>
-                <td>@Model.FormatBalance(user.balance)</td>
+                <td>@UsersModel.FormatBalance(user.balance)</td>
                 <td>
                     <form method="get" action="users/loans">
-                        <input type="hidden" name="id" value="@user.id"/>
+                        <input type="hidden" name="user_id" value="@user.id"/>
                         <input value="Loans" type="submit"/>
                     </form>
                     <form method="get" action="users/edit">

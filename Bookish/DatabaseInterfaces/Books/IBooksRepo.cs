@@ -6,7 +6,6 @@ namespace Bookish.DatabaseInterfaces
     public interface IBooksRepo
     {
         IEnumerable<BookModel> GetBooks();
-        IEnumerable<BookModel> GetBooks(int user_id);
         IEnumerable<BookCountModel> GetBooksAndStockCount(string sortBy, bool ascending);
         bool Insert(BookModel book);
         bool Update(BookModel book);

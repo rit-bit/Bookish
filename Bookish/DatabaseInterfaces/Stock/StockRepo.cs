@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Bookish.Models;
 using Dapper;
 using Npgsql;
@@ -38,6 +39,18 @@ namespace Bookish.DatabaseInterfaces
                 $"WHERE stock.book_id = {id} " +
                 $"GROUP BY stock.id, users.first_name, transactions.due_back " +
                 $"ORDER BY MAX(transactions.checked_out) DESC");
+        }
+
+        public IEnumerable<UserLoanModel> GetLoansForUser(int user_id)
+        {
+            using var db = DatabaseConnection.GetConnection();
+            return db.Query<UserLoanModel>(
+                "SELECT books.title, books.primary_author, stock.id, transactions.checked_out, transactions.due_back, transactions.late_fee " +
+                "FROM transactions " + 
+                "JOIN stock ON transactions.stock_id = stock.id " + 
+                "JOIN books ON stock.book_id = books.id " + 
+                $"WHERE transactions.user_id = {user_id} " +
+                "AND transactions.checked_in IS NULL");
         }
 
         public bool Insert(StockModel stockModel)

@@ -1,0 +1,31 @@
+﻿@using System.Collections
+@{
+    var loans = (IEnumerable<UserLoanModel>) ViewData["loans"];
+}
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Stock ID</th>
+        <th>Checked out</th>
+        <th>Due back</th>
+        <th>Late fee</th>
+    </tr>
+    @{
+        foreach (var loan in loans)
+        {
+            var checkedOut = loan.checked_out.ToString("d");
+            var dueBack = loan.due_back.ToString("d");
+            var lateFee = UsersModel.FormatBalance(loan.late_fee);
+            <tr>
+                <td>@loan.title</td>
+                <td>@loan.primary_author</td>
+                <td>@loan.id</td>
+                <td>@checkedOut</td>
+                <td>@dueBack</td>
+                <td>@lateFee</td>
+            </tr>
+        }
+    }
+</table>

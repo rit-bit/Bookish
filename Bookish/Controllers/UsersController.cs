@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Bookish.DatabaseInterfaces;
 using Bookish.Models;
 using Bookish.Models.Requests;
@@ -12,13 +13,13 @@ namespace Bookish.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUsersRepo _usersRepo;
-        private readonly IBooksRepo _booksRepo;
+        private readonly IStockRepo _stockRepo;
         
         public UsersController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _usersRepo = new UsersRepo();
-            _booksRepo = new BooksRepo();
+            _stockRepo = new StockRepo();
         }
 
         [HttpGet("")]
@@ -74,10 +75,12 @@ namespace Bookish.Controllers
 
             return RedirectToAction("UsersPage");
         }
+        
         [HttpGet("loans")]
         public IActionResult LoansPage(int user_id)
         {
-            ViewData["loans"] = _booksRepo.GetBooks(user_id);
+            Console.WriteLine("user_id: " + user_id);
+            ViewData["loans"] = _stockRepo.GetLoansForUser(user_id);
             return View();
         }
     }

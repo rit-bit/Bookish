@@ -8,7 +8,7 @@ namespace Bookish.Models
     {
         public IEnumerable<UserModel> users { get; set; }
         
-        public string FormatBalance(decimal balance)
+        public static string FormatBalance(decimal balance)
         {
             return $"£{balance:0.00}";
         }
