@@ -51,8 +51,16 @@ namespace Bookish.Controllers
                 additional_authors = bookModel.additional_authors
             };
 
-            _booksRepo.Insert(book);
-            
+            var id = _booksRepo.Insert(book);
+            if (id != 0) // If successful, create new stock for that book
+            {
+                _stockRepo.Insert(new StockModel
+                {
+                    book_id = id,
+                    is_active = true
+                });
+            }
+
             return RedirectToAction("BooksPage");
         }
 
@@ -128,7 +136,6 @@ namespace Bookish.Controllers
         [HttpPost("stock/delete")]
         public IActionResult DeleteBookStock(int bookId, int id, bool active)
         {
-            Console.WriteLine(active);
             _stockRepo.SetActive(id, !active);
 
             return RedirectToAction("BookStockPage", new { id = bookId});

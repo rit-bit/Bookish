@@ -79,7 +79,6 @@ namespace Bookish.Controllers
         [HttpGet("loans")]
         public IActionResult LoansPage(int user_id)
         {
-            Console.WriteLine("user_id: " + user_id);
             ViewData["loans"] = _stockRepo.GetLoansForUser(user_id);
             return View();
         }

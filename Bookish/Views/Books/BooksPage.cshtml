@@ -11,7 +11,7 @@
     var additionalAuthorsQuery = "books?sortBy=additional_authors&ascending=" + (Model.sortBy != "additional_authors" || !Model.@ascending);
     var isbnQuery = "books?sortBy=isbn&ascending=" + (Model.sortBy != "isbn" || !Model.@ascending);
 	var countQuery = "books?sortBy=active_stock&ascending=" + (Model.sortBy == "active_stock" && !Model.@ascending);
-    var availableQuery = "books?sortBy=available&ascending=" + (Model.sortBy == "available" && !Model.@ascending);
+    var availableQuery = "books?sortBy=available_stock&ascending=" + (Model.sortBy == "available_stock" && !Model.@ascending);
 }
 
 <table>

@@ -20,20 +20,21 @@ namespace Bookish.DatabaseInterfaces
             using var db = DatabaseConnection.GetConnection();
             sortBy = ValidateSortBy(sortBy);
             var order = ascending ? "ASC" : "DESC";
-            var sql = $"WITH stock_active_table (book_id, active_count) AS ( " +
-				$"SELECT book_id, COUNT(CASE active WHEN true then 1 else null end) AS active_count FROM stock " +
-				$"GROUP BY book_id " +
-				$"), latest_loans (stock_id, is_on_loan) AS (SELECT t1.stock_id, CASE WHEN t1.checked_in IS NULL THEN true ELSE NULL END AS is_on_loan " +
-				$"FROM transactions t1 " +
-				$"JOIN(" +
-				$"SELECT stock_id, MAX(checked_out) AS max_c3 " +
-				$"FROM transactions GROUP BY stock_id) t2 " +
-				$"ON t1.stock_id = t2.stock_id AND t1.checked_out = t2.max_c3) " +
-				$"SELECT books.*, MAX(stock_active_table.active_count) AS active_stock, COUNT(*) AS available_stock " +
-				$"FROM latest_loans RIGHT JOIN stock ON latest_loans.stock_id = stock.id " +
-				$"LEFT JOIN books ON books.id = stock.book_id " +
-				$"LEFT JOIN stock_active_table ON books.id = stock_active_table.book_id " +
-				$"WHERE latest_loans.is_on_loan IS NOT true GROUP BY books.id ORDER BY {sortBy} {order}";
+            var sql = $"WITH latest_loans (stock_id, is_on_loan) AS ( " +
+            "SELECT t1.stock_id, CASE WHEN t1.checked_in IS NULL THEN true ELSE NULL END AS is_on_loan " +
+                "FROM transactions t1 " +
+                "JOIN( " +
+                "SELECT stock_id, MAX(checked_out) AS max_c3 " +
+                "FROM transactions " +
+                "GROUP BY stock_id) t2 " +
+                "ON t1.stock_id = t2.stock_id AND t1.checked_out = t2.max_c3 " +
+            "), book_data (id, isbn, title, primary_author, additional_authors, active_stock, copies_on_loan) AS ( " +
+                "SELECT books.*, COUNT(CASE stock.active WHEN true then 1 else null end) AS active_stock, COUNT(CASE latest_loans.is_on_loan WHEN true then 1 else null end) AS copies_on_loan FROM books " +
+                "RIGHT JOIN stock ON books.id = stock.book_id " +
+                "LEFT JOIN latest_loans ON stock.id = latest_loans.stock_id " +
+                "GROUP BY books.id " +
+            ") " +
+            $"SELECT id, isbn, title, primary_author, additional_authors, active_stock, active_stock - copies_on_loan AS available_stock FROM book_data ORDER BY {sortBy} {order}";
             return db.Query<BookCountModel>(sql);
         }
         
@@ -53,20 +54,25 @@ namespace Bookish.DatabaseInterfaces
             }
         }
 
-        public bool Insert(BookModel book)
+        public int Insert(BookModel book)
         {
             using var db = DatabaseConnection.GetConnection();
             var transaction = db.BeginTransaction();
-            var rowsAffected = 0;
+            var id = 0;
             try
             {
-                rowsAffected = new NpgsqlCommand(
+                
+                var returnedId = new NpgsqlCommand(
                     $"INSERT INTO books (isbn, title, primary_author, additional_authors) VALUES (" +
                     $"'{book.isbn}', " +
                     $"'{book.title}', " +
                     $"'{book.primary_author}', " +
-                    $"'{book.additional_authors}')",
-                    db, transaction).ExecuteNonQuery();
+                    $"'{book.additional_authors}') " +
+                    $"returning id",
+                    db, transaction).ExecuteScalar();
+                
+                if (returnedId != null)
+                    id = (int) returnedId;
 
                 transaction.Commit();
             }
@@ -75,7 +81,7 @@ namespace Bookish.DatabaseInterfaces
                 Console.WriteLine(e);
             }
 
-            return rowsAffected == 1;
+            return id;
         }
 
         public bool Update(BookModel book)

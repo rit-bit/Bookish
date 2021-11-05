@@ -7,7 +7,7 @@ namespace Bookish.DatabaseInterfaces
     {
         IEnumerable<BookModel> GetBooks();
         IEnumerable<BookCountModel> GetBooksAndStockCount(string sortBy, bool ascending);
-        bool Insert(BookModel book);
+        int Insert(BookModel book);
         bool Update(BookModel book);
         bool Delete(int id);
     }
