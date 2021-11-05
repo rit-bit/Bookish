@@ -28,7 +28,8 @@ namespace Bookish.Controllers
 			var books = _booksRepo.GetBooksAndStockCount(sortBy, ascending);
 			if (isSearch)
 			{
-				books = books.Where(b => b.title.ToLower().Contains(search.ToLower()));
+				books = books.Where(b => (FuzzySharp.Fuzz.PartialRatio(b.title.ToLower(), search.ToLower()) > 75 ||
+											FuzzySharp.Fuzz.PartialRatio(b.primary_author.ToLower(), search.ToLower()) > 75));
 			}
 			var model = new AllBooksCountModel
 			{
