@@ -14,6 +14,12 @@
     var availableQuery = "books?sortBy=available_stock&ascending=" + (Model.sortBy == "available_stock" && !Model.@ascending);
 }
 
+<form method="get" action="books">
+	<input type="text" name="search"/>
+	<input type="hidden" name="isSearch" value="true"/>
+	<input type="submit" value="Go"/>
+</form>
+
 <table>
     <tr>
         <th><a href="@idQuery">ID</a></th>

@@ -23,16 +23,22 @@ namespace Bookish.Controllers
         }
         
         [HttpGet("")]
-        public IActionResult BooksPage(string sortBy = "title", bool ascending = true)
-        {
-            var books = _booksRepo.GetBooksAndStockCount(sortBy, ascending);
-            return View(new AllBooksCountModel
-            {
-                books = books,
-                sortBy = sortBy,
-                ascending = ascending
-            });
-        }
+        public IActionResult BooksPage(string sortBy = "title", bool ascending = true, bool isSearch = false, string search = "")
+		{
+			var books = _booksRepo.GetBooksAndStockCount(sortBy, ascending);
+			if (isSearch)
+			{
+				books = books.Where(b => b.title.ToLower().Contains(search.ToLower()));
+			}
+			var model = new AllBooksCountModel
+			{
+				books = books,
+				sortBy = sortBy,
+				ascending = ascending
+			};
+			return View(model);
+		}
+
 
         [HttpGet("create")]
         public IActionResult CreateBookPage()
