@@ -1,8 +1,10 @@
-﻿namespace Bookish.DatabaseInterfaces.Transactions
+﻿using System;
+
+namespace Bookish.DatabaseInterfaces.Transactions
 {
     public interface ITransactionsRepo
     {
-        void CheckIn(int stock_id);
-        void CheckOut(int stock_id, int user_id);
+        bool CheckIn(int stock_id);
+        bool CheckOut(int stock_id, int user_id, DateTime? due_back);
     }
 }

@@ -28,7 +28,7 @@ namespace Bookish.Controllers
         public IActionResult CheckOutStock(int user_id, int stock_id)
         {
             _transactionsRepo.CheckIn(stock_id); // If this fails it should do so silently
-            _transactionsRepo.CheckOut(stock_id, user_id);
+            _transactionsRepo.CheckOut(stock_id, user_id, null);
             ViewData["user_id"] = user_id;
             return RedirectToAction("CheckOutStockPage");
         }
